@@ -36,8 +36,8 @@ class LudoGame:
         master.title("Ludo Game")
         master.geometry("800x700") 
 
-        self.canvas = tk.Canvas(master, width=650, height=650, bg="lightcyan")
-        self.canvas.pack(side=tk.LEFT, padx=10, pady=10)
+        self.canvas = tk.Canvas(master, width=650, height=650, bg="wheat")
+        self.canvas.pack(side=tk.RIGHT, padx=200, pady=10)
 
         self.control_frame = tk.Frame(master)
         self.control_frame.pack(side=tk.RIGHT, padx=10)
@@ -113,7 +113,7 @@ class LudoGame:
         for player_color, cells in self.yard_layout.items():
             for r_idx, c_idx in cells:
                 coords = self.grid_cells[(r_idx, c_idx)]
-                self.canvas.create_rectangle(coords, fill=YARD_BG_COLOR, outline="black", width=1, tags="board")
+                self.canvas.create_rectangle(coords, fill=YARD_BG_COLOR, outline="black", width=2, tags="board")
                 inner_x0, inner_y0, inner_x1, inner_y1 = coords
                 cx = (inner_x0 + inner_x1) / 2
                 cy = (inner_y0 + inner_y1) / 2
@@ -131,14 +131,14 @@ class LudoGame:
             if i == START_POSITIONS["yellow"]: fill_color = "lightyellow"
             if i == START_POSITIONS["blue"]: fill_color = "lightblue"
 
-            self.canvas.create_rectangle(coords, fill=fill_color, outline="black", width=1, tags="board")
+            self.canvas.create_rectangle(coords, fill=fill_color, outline="black", width=2, tags="board")
         for player_color, path in self.home_path_coords.items():
             for i, (r_idx, c_idx) in enumerate(path):
                 coords = self.grid_cells[(r_idx, c_idx)]
                 fill_c = player_color if i < 5 else HOME_AREA_COLOR
                 if i == 5: 
                      fill_c = player_color 
-                self.canvas.create_rectangle(coords, fill=fill_c, outline="black", width=1, tags="board")
+                self.canvas.create_rectangle(coords, fill=fill_c, outline="black", width=2, tags="board")
 
         r_coords = self.grid_cells[self.home_path_coords["red"][-1]] 
         g_coords = self.grid_cells[self.home_path_coords["green"][-1]]
@@ -147,7 +147,7 @@ class LudoGame:
 
         center_x = BOARD_OFFSET + 7.5 * CELL_SIZE
         center_y = BOARD_OFFSET + 7.5 * CELL_SIZE
-
+        #triangle shape 
         self.canvas.create_polygon(
             r_coords[0]+CELL_SIZE, r_coords[1]+CELL_SIZE/2, 
             center_x, center_y,
@@ -319,6 +319,7 @@ class LudoGame:
                 token["state"] = "on_board"
                 token["path_pos"] = START_POSITIONS[color]
                 self.status_label.config(text=f"{color.capitalize()} token out of yard!")
+                self.roll_button.config(state=tk.NORMAL)
                 self.extra_turn = True 
             else: 
                 return
